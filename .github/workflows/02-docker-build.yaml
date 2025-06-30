@@ -1,18 +1,23 @@
 name: Docker Build and Push
 
 on:
-    workflow_run:
-        workflows: ["01-ci.yaml"]
-        types:
-            - completed
+    repository_dispatch:
+        types: [trigger-docker-build]
 
 jobs:
     build:
-        if: ${{github.event.workflow_run.conclusion == 'success'}}
+        if: github.event.action == 'trigger-docker-build'
         runs-on: ubuntu-latest            
         steps:
+            - name: Trigger Docker Build
+              if: success()
+              uses: peter-evans/repository-dispatch@v3
+              with:
+                token: ${{ secrets.GITHUB_TOKEN }}
+                event-type: trigger-docker
             - uses: actions/checkout@v4
 
             - run: |
                 docker build -t ${{ secrets.DOCKER_USERNAME }}/fastapi-app:latest .
-                docker push ${{ secrets.DOCKER_USERNAME }}/fastapi-app:latest
+                docker push ${{ secrets.DOCKER_USERNAME }}/fastapi-app:latest                
+    

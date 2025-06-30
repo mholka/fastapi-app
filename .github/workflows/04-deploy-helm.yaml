@@ -1,10 +1,9 @@
 name: Deploy to AKS using Helm
 
 on:
-    workflow_run:
-        workflows: ["03-terraform.yaml"]
-        types:
-            - completed
+  repository_dispatch:
+    types: [trigger-deploy]
+
 
 jobs:
     deploy:
@@ -12,6 +11,13 @@ jobs:
         runs-on: ubuntu-latest
         
         steps:
+            - name: Trigger Helm Deploy
+              if: success()
+              uses: peter-evans/repository-dispatch@v3
+              with:
+                token: ${{ secrets.GITHUB_TOKEN }}
+                event-type: trigger-deploy
+
             - name: Checkout code
               uses: actions/checkout@v4
             - name: Set up Helm
