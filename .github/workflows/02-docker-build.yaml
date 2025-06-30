@@ -10,5 +10,11 @@ jobs:
         steps:
             - run: |
                 docker build -t ${{ secrets.DOCKER_USERNAME }}/fastapi-app:latest .
-                docker push ${{ secrets.DOCKER_USERNAME }}/fastapi-app:latest                
+                docker push ${{ secrets.DOCKER_USERNAME }}/fastapi-app:latest
+            - name: Trigger Terraform Apply
+            if: success()
+            uses: peter-evans/repository-dispatch@v3
+            with:
+                token: ${{ secrets.GITHUB_TOKEN }}
+                event-type: trigger-terraform
     
