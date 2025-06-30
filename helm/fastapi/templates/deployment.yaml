@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fastapi
+  name:  {{ values.appName }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: fastapi
+      app:  {{ values.appName }}
   template:
     metadata:
       labels:
-        app: fastapi
+        app:  {{ values.appName }}
     spec:
       containers:
-        - name: fastapi
+        - name:  {{ values.appName }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           ports:
             - containerPort: 80
