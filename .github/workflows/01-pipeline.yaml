@@ -7,7 +7,7 @@ on:
 
 jobs:
   full-pipeline:
-    runs-on: ubuntu-latest
+    runs-on: srv-docker-prod-1
     environment: production
 
     steps:
@@ -43,10 +43,8 @@ jobs:
       with:
         terraform_version: 1.6.6
 
-    - name: Azure Login
-      uses: azure/login@v2
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Verify Azure CLI
+      run: az account show
 
     - name: Terraform Init
       working-directory: terraform
