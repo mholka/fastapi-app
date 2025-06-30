@@ -1,0 +1,25 @@
+name: Deploy via ArgoCD
+
+on:
+    workflow_run:
+        workflows: ["03-terraform.yaml"]
+        types:
+            - completed
+
+jobs:
+    sync:
+        if: ${{github.event.workflow_run.conclusion == 'success'}}
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Set up kubectl
+              uses: azure/setup-kubectl@v1
+              with:
+                  version: 'latest'
+
+            - name: Sync ArgoCD Application
+              run: |
+                  curl -s -k -x POST \
+                    -H "Authorization: Bearer ${{ secrets.ARGOCD_AUTH_TOKEN }}" \
+                    "https://${{ secrets.ARGOCD_SERVER }}/api/v1/applications/fastapi-app/sync" \

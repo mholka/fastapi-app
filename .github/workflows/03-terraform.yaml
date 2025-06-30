@@ -1,0 +1,45 @@
+name: Provision AKS Cluster with Terraform
+
+on:
+    workflow_run:
+        workflows: ["02-docker-build.yaml"]
+        types:
+            - completed
+
+jobs:
+    terraform:
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: terraform
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: azure/login@v2
+              with: 
+                creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+            - uses: hashicorp/setup-terraform@v3
+
+            - run: terraform init
+
+            - name: Terraform Plan
+              run: terraform plan -out=tfplan
+              output: tfplan
+              env:
+                ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+                ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+                ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+                ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+
+            - name: Terraform Apply
+              run: terraform apply -auto-approve tfplan
+              env:
+                ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+                ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+                ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+                ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}              
+
+                    
