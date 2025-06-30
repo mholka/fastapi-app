@@ -10,7 +10,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Trigger CI Workflow
-              uses: peter-evans/workflow-dispatch@v3
+              uses: peter-evans/repository-dispatch@v3
               with:
                 token: ${{ secrets.GITHUB_TOKEN }}
                 repository: matusholka/fastapi-app
