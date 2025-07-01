@@ -60,8 +60,7 @@ jobs:
       working-directory: terraform
       run: terraform import azurerm_resource_group.main "/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/rg-fastapi"
 
-
-      - name: Terraform Plan
+    - name: Terraform Plan
       working-directory: terraform
       run: terraform plan
       env:
