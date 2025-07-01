@@ -7,7 +7,7 @@ on:
 
 jobs:
   full-pipeline:
-    runs-on: srv-docker-prod-1
+    runs-on: self-hosted
     environment: production
 
     steps:
