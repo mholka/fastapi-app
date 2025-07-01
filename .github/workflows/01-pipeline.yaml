@@ -52,15 +52,15 @@ jobs:
     - name: Verify Azure CLI
       run: az account show
 
-    - name: Terraform Import RG
-      run: terraform import azurerm_resource_group.main "/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/rg-fastapi"
-      working-directory: terraform
-      
     - name: Terraform Init
       working-directory: terraform
       run: terraform init
 
-    - name: Terraform Plan
+    - name: Terraform Import RG
+      run: terraform import azurerm_resource_group.main "/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/rg-fastapi"
+      working-directory: terraform
+      
+      - name: Terraform Plan
       working-directory: terraform
       run: terraform plan
       env:
