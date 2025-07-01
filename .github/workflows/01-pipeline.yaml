@@ -57,9 +57,10 @@ jobs:
       run: terraform init
 
     - name: Terraform Import RG
-      run: terraform import azurerm_resource_group.main "/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/rg-fastapi"
       working-directory: terraform
-      
+      run: terraform import azurerm_resource_group.main "/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/rg-fastapi"
+
+
       - name: Terraform Plan
       working-directory: terraform
       run: terraform plan
