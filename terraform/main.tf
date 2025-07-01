@@ -23,9 +23,7 @@ terraform {
 provider "azurerm" {
   features {}
 }
-- name: Terraform Import RG
-  run: terraform import azurerm_resource_group.main "/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/rg-fastapi"
-  
+
 resource "azurerm_resource_group" "main" {
   name     = var.resource_group
   location = var.location
