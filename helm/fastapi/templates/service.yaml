@@ -4,7 +4,7 @@ metadata:
   creationTimestamp: null
   labels:
     run: {{ values.appName }}
-  name:  {{ values.appName }}-svc
+  name:  "{{ values.appName }}-svc"
 spec:
   ports:
   - port: 80
