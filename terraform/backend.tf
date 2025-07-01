@@ -1,8 +1,8 @@
 terraform {
   backend "azurerm" {
-    resource_group_name  = "tfstate-rg"
-    storage_account_name = "tfstatefastapi"
+    resource_group_name  = "rg-fastapi"
+    storage_account_name = "fastapistatestg"
     container_name       = "tfstate"
-    key                  = "prod.terraform.tfstate"
+    key                  = "fastapi.tfstate"
   }
 }

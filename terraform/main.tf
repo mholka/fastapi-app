@@ -12,14 +12,7 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "~> 2.30"
     }
-
-    backend "azurerm" {
-    resource_group_name  = "tfstate-rg"
-    storage_account_name = "tfstatefastapi"
-    container_name       = "tfstate"
-    key                  = "prod.terraform.tfstate"
-  }
-  }
+ }
 
   required_version = ">= 1.4"
 }
@@ -35,6 +28,24 @@ resource "azurerm_resource_group" "main" {
   name     = var.resource_group
   location = var.location
 }
+
+/* resource "azurerm_storage_account" "tfstate" {
+  name                     = "fastapistatestg"
+  resource_group_name      = azurerm_resource_group.main.name
+  location                 = azurerm_resource_group.main.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+
+  allow_blob_public_access = false
+}
+
+
+resource "azurerm_storage_container" "tfstate" {
+  name                  = "tfstate"
+  storage_account_name  = azurerm_storage_account.tfstate.name
+  container_access_type = "private"
+}
+*/
 
 resource "azurerm_kubernetes_cluster" "main" {
   name                = var.cluster_name

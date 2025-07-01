@@ -1,7 +1,7 @@
 variable "resource_group" {
     description = "Name of the Azure RG"
     type = string
-    default = "fastapi-rg"
+    default = "rg-fastapi"
 }
 
 variable "location" {
